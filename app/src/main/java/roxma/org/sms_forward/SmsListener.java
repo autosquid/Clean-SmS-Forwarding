@@ -33,6 +33,10 @@ public class SmsListener extends BroadcastReceiver {
                 String message = "[" + address + "] " + messageBody;
 
                 String number = context.getSharedPreferences("data", Context.MODE_PRIVATE).getString("number", "");
+                if(number=="") {
+                    Log.i("sms","phone number not set. ignore this one.");
+                    return;
+                }
                 Log.i("sms","sending to " + number);
 
                 Log.i("sms","message send:" + message);
