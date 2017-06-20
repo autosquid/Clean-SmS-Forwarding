@@ -2,6 +2,7 @@ package cc.mightu.sms_forward;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -31,15 +32,20 @@ public class MainActivity extends AppCompatActivity {
         editText.setText(number, TextView.BufferType.EDITABLE);
 
         setupPermissions();
+
+        Intent startServiceIntent = new Intent(this, ForwardSMSService.class);
+        startServiceIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
+        startService(startServiceIntent);
     }
 
     private void setupPermissions() {
         // If we don't have the record audio permission...
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_BOOT_COMPLETED) != PackageManager.PERMISSION_GRANTED)
+        {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                String[] permissionsWeNeed = new String[]{Manifest.permission.RECEIVE_SMS, Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS};
+                String[] permissionsWeNeed = new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_BOOT_COMPLETED};
                 requestPermissions(permissionsWeNeed, MY_PERMISSION_SEND_MSG_REQUEST_CODE);
             }
         } else {
@@ -48,20 +54,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSION_SEND_MSG_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 } else {
-                    Toast.makeText(this, "Permission for audio not granted. Visualizer can't run.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Permission for audio not granted. Visualizer can't run." + String.valueOf(grantResults[0]), Toast.LENGTH_LONG).show();
                     finish();
                 }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
 
     public void sendSMS(View v) {
         EditText editText = (EditText) findViewById(cc.mightu.sms_forward.R.id.edit_phone_number);
@@ -74,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         String message = "This is a test message to " + number;
         Log.i("sms", "message send:" + message);
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(number, null, message, null, null);
+//        SmsManager smsManager = SmsManager.getDefault();
+//        smsManager.sendTextMessage(number, null, message, null, null);
     }
 }
 
