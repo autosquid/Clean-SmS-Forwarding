@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "roxma.org.sms_forward"
+        applicationId "cc.mightu.sms_forward"
         minSdkVersion 23
         targetSdkVersion 23         // 这里涉及权限系统
         versionCode 1

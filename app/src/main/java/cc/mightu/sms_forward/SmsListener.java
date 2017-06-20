@@ -9,13 +9,11 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 
 public class SmsListener extends BroadcastReceiver {
-
     public SmsListener() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
         // throw new UnsupportedOperationException("Not yet implemented");
         Log.i("sms", "on receive," + intent.getAction());
