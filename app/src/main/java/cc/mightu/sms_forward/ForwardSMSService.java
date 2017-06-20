@@ -3,8 +3,10 @@ package cc.mightu.sms_forward;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,8 +16,10 @@ import android.os.IBinder;
 import android.provider.Telephony;
 import android.support.v7.app.NotificationCompat;
 import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -34,26 +38,35 @@ public class ForwardSMSService extends Service {
 
     private long mReceivedMsgDate = 0;
 
-    private ContentObserver SmsContentObserver = new ContentObserver(null) {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onChange(boolean selfChange) {
-            Log.i("sms", "sms inbox change detected");
-            Cursor cursor = getContentResolver().query(Uri.parse(SMS_INBOX_URI), PROJECTION, null, null, "date DESC");
-            if (cursor != null && !cursor.isClosed()) {
-                if (cursor.moveToFirst()) {
-                    final long date = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE));
-                    String recv_date = DateFormat.format("h:mm:ss", new Date(date)).toString();
-                    String address = cursor.getString(1);
-                    String messageBody = cursor.getString(2);
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(action)){
+                Log.i("sms", "on receive," + intent.getAction());
+                if (Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(intent.getAction())) {
+                    for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
 
-                    String message = "[" + address + "on: " + recv_date + "] " + messageBody;
+                        String messageBody = smsMessage.getMessageBody();
+                        String emailFrom = smsMessage.getEmailFrom();
+                        String address = smsMessage.getOriginatingAddress();
+                        Log.i("sms", "body: " + messageBody);
+                        Log.i("sms", "address: " + address);
 
-                    String number = getSharedPreferences("data", Context.MODE_PRIVATE).getString("number", "");
-                    SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
-                    Log.i("sms", "message send:" + message);
+                        String message = "[" + address + "] " + messageBody;
+
+                        String number = context.getSharedPreferences("data", Context.MODE_PRIVATE).getString("number", "");
+                        if (number == "") {
+                            Log.i("sms", "phone number not set. ignore this one.");
+                            return;
+                        }
+                        Log.i("sms", "sending to " + number);
+
+                        Log.i("sms", "message send:" + message);
+                        SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
+                    }
                 }
             }
-            cursor.close();
         }
     };
 
@@ -61,7 +74,6 @@ public class ForwardSMSService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Start Foreground Intent ");
-            getContentResolver().registerContentObserver(Uri.parse(SMS_INBOX_URI), true, SmsContentObserver);
 
             Intent notificationIntent = new Intent(this, MainActivity.class);
             notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
@@ -74,8 +86,8 @@ public class ForwardSMSService extends Service {
 
             Notification notification = new NotificationCompat.Builder(this)
                     .setContentTitle("SmS Forwarding")
-                    .setTicker("Truiton Music Player")
-                    .setContentText("My Music")
+                    .setTicker("Smartphone Player")
+                    .setContentText("Keep Me Alive")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(Bitmap.createScaledBitmap(icon, 128, 128, false))
                     .setContentIntent(pendingIntent)
@@ -84,7 +96,6 @@ public class ForwardSMSService extends Service {
             startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, notification);
         } else if (intent.getAction().equals(Constants.ACTION.STOPFOREGROUND_ACTION)) {
             Log.i(LOG_TAG, "Received Stop Foreground Intent");
-            getContentResolver().unregisterContentObserver(SmsContentObserver);
             stopForeground(true);
             stopSelf();
         }
@@ -94,13 +105,15 @@ public class ForwardSMSService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        getContentResolver().registerContentObserver(Uri.parse(SMS_INBOX_URI), true, SmsContentObserver);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.provider.Telephony.SMS_RECEIVED");
+        registerReceiver(receiver, filter);
     }
 
     @Override
     public void onDestroy() {
+        unregisterReceiver(receiver);
         super.onDestroy();
-        getContentResolver().unregisterContentObserver(SmsContentObserver);
     }
 
     @Override
