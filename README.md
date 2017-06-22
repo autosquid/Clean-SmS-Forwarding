@@ -8,6 +8,7 @@ If you find this app to be useful, please donate so that I can register as a Goo
 
 将安卓手机上的新短信发送到我的新手机上！如果你觉得应用不错，可以向我捐款让我注册开发者账号上架成为正式应用。
 
+![Alipay Account](https://user-images.githubusercontent.com/758925/27426341-f74e5ef8-576d-11e7-887b-8f2a839f7714.png)
 
 ## Notice
 
