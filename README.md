@@ -1,14 +1,12 @@
 # SMS Forward
 ## Introduction
 
-An Android SMS forwardning APP such that I can resent SmS from my old phone to my new one (Fxxxking multiple platforms).
+An Android SMS forwardning APP such that I can resent SmS from my old andoroid to a new one.
 
-If you find this app to be useful, please donate so that I can register as a Google developer, and put the app online.
+If you find this app to be useful, please star this repo.
 
+![screenshot_2017-07-19-16-16-24-385_cc mightu sms_forward](https://user-images.githubusercontent.com/758925/28505139-70e3afd6-7053-11e7-8ad2-bc2431d20f1d.png)
 
-将安卓手机上的新短信发送到我的新手机上！如果你觉得应用不错，可以向我捐款让我注册开发者账号上架成为正式应用。
-
-![Alipay Account](https://user-images.githubusercontent.com/758925/27426341-f74e5ef8-576d-11e7-887b-8f2a839f7714.png)
 
 ## Notice
 
@@ -16,9 +14,11 @@ Do clear the notification, or the app may fail on certain phones, such as Xiaomi
 
 不要关闭通知栏中的图标，不然在一些手机上，如小米，会失效。
 
+![screenshot_2017-07-19-16-23-24-865_com miui home](https://user-images.githubusercontent.com/758925/28505142-79f7920e-7053-11e7-94a2-3c5b96e5760a.png)
 
 ## Download Apk
 
-I put a built apk in the =release= page. Download it there.
+I put a built apk in the **release** page. Download it there.
 
+https://github.com/autosquid/Clean-SmS-Forwarding/releases
 
