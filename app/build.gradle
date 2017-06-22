@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "cc.mightu.sms_forward"
-        minSdkVersion 23
+        minSdkVersion 14
         targetSdkVersion 23         // 这里涉及权限系统
         versionCode 1
         versionName "1.0"

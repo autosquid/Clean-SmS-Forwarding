@@ -17,3 +17,8 @@ Do clear the notification, or the app may fail on certain phones, such as Xiaomi
 不要关闭通知栏中的图标，不然在一些手机上，如小米，会失效。
 
 
+## Download Apk
+
+I put a built apk in the =release= page. Download it there.
+
+
