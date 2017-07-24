@@ -7,7 +7,7 @@ If you find this app to be useful, please star this repo.
 
 <img width="200" alt="portfolio_view" src="https://user-images.githubusercontent.com/758925/28505139-70e3afd6-7053-11e7-8ad2-bc2431d20f1d.png">
 
-## Notice
+## Note
 
 Do clear the notification, or the app may fail on certain phones, such as Xiaomi.
 
@@ -15,7 +15,7 @@ Do clear the notification, or the app may fail on certain phones, such as Xiaomi
 
 <img width="200" alt="portfolio_view" src="https://user-images.githubusercontent.com/758925/28505142-79f7920e-7053-11e7-94a2-3c5b96e5760a.png">
 
-## Download Apk
+## Download
 
 I put a built apk in the **release** page. Download it there.
 
