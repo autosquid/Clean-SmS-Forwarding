@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.ArrayList;
 
 public class ForwardSMSService extends Service {
     private static final String LOG_TAG = "ForwardSMSService";
@@ -63,7 +64,9 @@ public class ForwardSMSService extends Service {
                         Log.i("sms", "sending to " + number);
 
                         Log.i("sms", "message send:" + message);
-                        SmsManager.getDefault().sendTextMessage(number, null, message, null, null);
+                        SmsManager sms = SmsManager.getDefault();
+                        ArrayList<String> dividedMessages = sms.divideMessage(message);
+                        sms.sendMultipartTextMessage(number, null, dividedMessages, null, null);
                     }
                 }
             }
@@ -121,4 +124,3 @@ public class ForwardSMSService extends Service {
         return null;
     }
 }
-
