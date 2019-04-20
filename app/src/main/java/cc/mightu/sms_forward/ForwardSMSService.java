@@ -57,7 +57,7 @@ public class ForwardSMSService extends Service {
                         message_total = message_total + messageBody;
                     }
 
-                    message_total = message_total + "\n[ from " + address + "] ";
+                    message_total = message_total + "\n[from " + address + "] ";
                     String number = context.getSharedPreferences("data", Context.MODE_PRIVATE).getString("number", "");
                     if (number == "") {
                         Log.i("sms", "phone number not set. ignore this one.");
