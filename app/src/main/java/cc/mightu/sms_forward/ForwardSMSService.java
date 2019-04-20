@@ -46,29 +46,29 @@ public class ForwardSMSService extends Service {
             if(Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(action)){
                 Log.i("sms", "on receive," + intent.getAction());
                 if (Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(intent.getAction())) {
+                    String message_total = "";
+                    String address = "";
                     for (SmsMessage smsMessage : Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
-
-                        String messageBody = smsMessage.getMessageBody();
                         String emailFrom = smsMessage.getEmailFrom();
-                        String address = smsMessage.getOriginatingAddress();
+                        address = smsMessage.getOriginatingAddress();
+                        String messageBody = smsMessage.getMessageBody();
                         Log.i("sms", "body: " + messageBody);
                         Log.i("sms", "address: " + address);
-
-                        String message = "[" + address + "] " + messageBody;
-
-                        String number = context.getSharedPreferences("data", Context.MODE_PRIVATE).getString("number", "");
-                        if (number == "") {
-                            Log.i("sms", "phone number not set. ignore this one.");
-                            return;
-                        }
-                        Log.i("sms", "sending to " + number);
-
-                        Log.i("sms", "message send:" + message);
-                        SmsManager sms = SmsManager.getDefault();
-                        ArrayList<String> dividedMessages = sms.divideMessage(message);
-                        sms.sendMultipartTextMessage(number, null, dividedMessages, null, null);
+                        message_total = message_total + messageBody;
                     }
-                }
+
+                    message_total = message_total + "\n[ from " + address + "] ";
+                    String number = context.getSharedPreferences("data", Context.MODE_PRIVATE).getString("number", "");
+                    if (number == "") {
+                        Log.i("sms", "phone number not set. ignore this one.");
+                        return;
+                    }
+                    Log.i("sms", "sending to " + number);
+
+                    Log.i("sms", "message send:" + message_total);
+                    SmsManager sms = SmsManager.getDefault();
+                    ArrayList<String> dividedMessages = sms.divideMessage(message_total);
+                    sms.sendMultipartTextMessage(number, null, dividedMessages, null, null);
             }
         }
     };
