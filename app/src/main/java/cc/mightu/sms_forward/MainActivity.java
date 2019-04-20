@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("number", number);
         editor.apply();
 
-        String message = "This is a test message to " + number;
-        Log.i("sms", "message send:" + message);
-
+        //String message = "This is a test message to " + number;
+        //Log.i("sms", "message send:" + message);
+        Toast.makeText(getApplicationContext(), "设置成功", Toast.LENGTH_SHORT).show();
 //        SmsManager smsManager = SmsManager.getDefault();
 //        smsManager.sendTextMessage(number, null, message, null, null);
     }
