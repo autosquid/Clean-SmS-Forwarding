@@ -71,6 +71,7 @@ public class ForwardSMSService extends Service {
                     sms.sendMultipartTextMessage(number, null, dividedMessages, null, null);
             }
         }
+    }
     };
 
     @Override
