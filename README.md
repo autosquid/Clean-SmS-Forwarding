@@ -17,7 +17,5 @@ Do clear the notification, or the app may fail on certain phones, such as Xiaomi
 
 ## Download
 
-I put a built apk in the **release** page. Download it there.
-
-https://github.com/autosquid/Clean-SmS-Forwarding/releases
+See releases.
 
